@@ -1,0 +1,60 @@
+.charsContainer {
+    margin: 0 auto;
+    display: grid;
+    gap: .6rem;
+    background-color:rgba(red, green, blue, .1);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    width: 60%; 
+
+}
+
+.charCard {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform .3s ease-in;
+    border: 1px solid rgb(84, 76, 76);
+    background-clip: padding-box;
+    
+   
+}
+
+.back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotateY(180deg);
+    height: 100%;
+}
+
+.back > img {
+   height:100%;
+   object-fit: cover;
+   
+}
+
+.front, .back {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    backface-visibility: hidden;
+ 
+}
+
+
+
+.charsContainer.rotate > .charCard {
+    transform: rotateY(180deg);
+}
+
+
+.charCard img {
+    width: 100%;
+   
+}
+
+
+.charCard h3 {
+    margin: 0;
+    color: rgb(255, 255, 255);
+   
+}
