@@ -37,6 +37,7 @@ function Character({name, src, isSpecial }) {
     return (
     <>
         <div className={styles.charCard}  id={isSpecial ? 'isSpecial' : null}>
+           
             <div className={styles.front} >
                 <h3>{name}</h3>
                 <img src={src} alt={name} /> 
@@ -44,14 +45,15 @@ function Character({name, src, isSpecial }) {
             <div className={styles.back} >
                 <img src={cardBack} alt={name} /> 
             </div>
-
+           
         </div>
+      
     </>
    
     );
 }
 
-export default function Characters() {
+export default function Characters({setBestScore,setCurrentScore, bestScore, currentScore}) {
     const [isRotated, setRotated] = useState(false);
     const [charArray, setCharArr] = useState(charactersArray);
 
@@ -65,7 +67,6 @@ export default function Characters() {
 
     const onTransitionEnd = (e) => {
         if(e.target.id && isRotated) {
-            
             const newArray = shuffleArray([...charArray]);
             setCharArr(newArray);
             setTimeout(() => {
@@ -75,14 +76,30 @@ export default function Characters() {
     }
 
     const onClick = (e) => {
+
+       
        
         if(!isRotated) {
             const charName = e.target.closest(`.${styles.front}`).querySelector('h3').innerHTML;
             const charIndex = charArray.findIndex(char => char.name === charName);
-            console.log(charName);
             
             if (charArray[charIndex].isClicked) {
+                const newCharArray = charArray.map(char => {
+                    if(char.isClicked === true) {
+                        return { ...char, isClicked: false };
+                    } else {
+                        return char
+                    }
+                });
+                setCharArr(newCharArray);
+                setRotated(prevState => !prevState);
+
                 console.log(`${charName} has already been clicked.`);
+                if(bestScore < currentScore) {
+                    setBestScore(currentScore)
+                }
+                setCurrentScore(0);
+               
                 
             } else {
                 const updatedArray = charArray.map(char => {
@@ -91,13 +108,11 @@ export default function Characters() {
                     }
                     return char;
                 });
+                setCurrentScore((currentScore) => currentScore+1)
                 setCharArr(updatedArray);
                 setRotated(prevState => !prevState);
-            }
-           
+            }  
         }
-       
-
     };
     
     return (

@@ -1,0 +1,16 @@
+
+
+.scoreBoard {
+    display: flex;
+    flex-direction:column;
+    place-content: center;
+    
+}
+
+
+
+.currentScore, .bestScore {
+    display: flex;
+    gap:.4rem
+  
+}

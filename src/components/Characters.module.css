@@ -1,10 +1,11 @@
 .charsContainer {
     margin: 0 auto;
     display: grid;
-    gap: .6rem;
+    gap: 1.2rem;
     background-color:rgba(red, green, blue, .1);
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    width: 60%; 
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    width: 70%; 
+    height: max-content;
 
 }
 
@@ -12,11 +13,14 @@
     position: relative;
     transform-style: preserve-3d;
     transition: transform .3s ease-in;
-    border: 1px solid rgb(84, 76, 76);
+   
     background-clip: padding-box;
+    height: max-content;
     
    
 }
+
+
 
 .back {
     position: absolute;
@@ -37,6 +41,11 @@
     flex-direction: column;
     place-items: center;
     backface-visibility: hidden;
+
+    
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 0px 7px 2px rgb(149, 152, 219);
  
 }
 
@@ -56,5 +65,6 @@
 .charCard h3 {
     margin: 0;
     color: rgb(255, 255, 255);
-   
+    background-color: black;
+    width: 100%;
 }

@@ -4,14 +4,43 @@ import { useState } from 'react'
 import './App.css'
 
 import Characters from './components/Characters.jsx'
+import ScoreBoard from './components/ScoreBoard.jsx'
+
+
 
 
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [currentScore, setCurrentScore] = useState(0);
+    const [bestScore, setBestScore] = useState(0);
 
   return (
-    <Characters />
+    <div className='container'>
+        <div className="leftSide">
+           <div className='logo'>
+            <h1>Teraxus</h1>
+            <h2>The Last Battle</h2>
+           </div>
+        </div>
+        <div className="center">
+            <Characters
+                setBestScore={setBestScore}
+                setCurrentScore={setCurrentScore} 
+                bestScore={bestScore}
+                currentScore={currentScore}
+            /> 
+        </div>
+        <div className="rightSide">
+            <ScoreBoard 
+                bestScore={bestScore}
+                currentScore={currentScore}
+            />
+        </div>
+        
+        
+       
+    </div>
+    
   )
 }
 

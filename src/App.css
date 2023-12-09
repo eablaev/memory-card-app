@@ -1,29 +1,53 @@
-#root {
 
- width: 100vw;
- height: 100vh;
+
+
+
+#root {
+    font-family: 'Orbitron', sans-serif;
+
+    width: 100vw;
+    height: 100vh;
  
-  margin: 0 auto;
-  text-align: center; 
+    margin: 0 auto;
+    text-align: center; 
 }
 
 *, *::after, *::before {
     box-sizing: border-box;
+    margin: 0;
 }
 
 
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.logo{
+    transition: transform .11s ease-in-out;
+}
+.logo:hover {
+    transform: scale(1.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+
+.container {
+    background-image: url(./assets/images/city/_09e0b8f4-f180-42a4-8ac7-6b8d847ce196.jpeg);
+    padding: 1rem;
+  
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    margin: 0 auto;
+    height: 100%;     
 }
+
+.rightSide {
+    /* border: 3px solid green; */
+}
+
+.leftSide{
+    /* border: 3px solid yellow; */
+}
+.center {
+    /* border: 3px solid blue; */
+    display: flex;
+    place-items: center;
+}
+
