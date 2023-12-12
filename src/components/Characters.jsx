@@ -37,25 +37,22 @@ function Character({name, src, isSpecial }) {
     return (
     <>
         <div className={styles.charCard}  id={isSpecial ? 'isSpecial' : null}>
-           
             <div className={styles.front} >
                 <h3>{name}</h3>
                 <img src={src} alt={name} /> 
             </div>
             <div className={styles.back} >
                 <img src={cardBack} alt={name} /> 
-            </div>
-           
-        </div>
-      
+            </div>   
+        </div>  
     </>
-   
-    );
+    )
 }
 
-export default function Characters({setBestScore,setCurrentScore, bestScore, currentScore}) {
+export default function Characters({setBestScore, setCurrentScore, bestScore, currentScore, setGameState, lives, setLives}) {
     const [isRotated, setRotated] = useState(false);
     const [charArray, setCharArr] = useState(charactersArray);
+    
 
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -66,54 +63,61 @@ export default function Characters({setBestScore,setCurrentScore, bestScore, cur
     }
 
     const onTransitionEnd = (e) => {
+        console.log('animation end')
         if(e.target.id && isRotated) {
             const newArray = shuffleArray([...charArray]);
             setCharArr(newArray);
             setTimeout(() => {
                 setRotated(prevState => !prevState);
             },300)
-            }   
+        }   
     }
 
     const onClick = (e) => {
-
-       
-       
-        if(!isRotated) {
+        //making sure only applies when cards are rotated
+        if (!isRotated) {
             const charName = e.target.closest(`.${styles.front}`).querySelector('h3').innerHTML;
             const charIndex = charArray.findIndex(char => char.name === charName);
             
+            let updatedArray = charArray;
+            let gameOver = false;
+    
+            // Checking if it was already clicked
             if (charArray[charIndex].isClicked) {
-                const newCharArray = charArray.map(char => {
-                    if(char.isClicked === true) {
-                        return { ...char, isClicked: false };
-                    } else {
-                        return char
-                    }
-                });
-                setCharArr(newCharArray);
-                setRotated(prevState => !prevState);
-
-                console.log(`${charName} has already been clicked.`);
-                if(bestScore < currentScore) {
-                    setBestScore(currentScore)
+                // Checking if the game is over
+                if (lives <= 1) {
+                    console.log('game over');
+                    setGameState('gameEnd');
+                    gameOver = true;
+                   
+                } else {
+                    
+                    setBestScore(bestScore => Math.max(bestScore, currentScore));
                 }
+                //reset current score for the next round or new game
+                setLives(lives => lives - 1);
                 setCurrentScore(0);
-               
-                
             } else {
-                const updatedArray = charArray.map(char => {
+                // If the card has not been clicked yet
+                setCurrentScore(currentScore => currentScore + 1);
+            }
+    
+            // Update the array and state only if the game is not over
+            if (!gameOver) {
+                updatedArray = charArray.map(char => {
                     if (char.name === charName) {
-                        return { ...char, isClicked: true };
+                        return { ...char, isClicked: !charArray[charIndex].isClicked };
                     }
                     return char;
                 });
-                setCurrentScore((currentScore) => currentScore+1)
+                
                 setCharArr(updatedArray);
                 setRotated(prevState => !prevState);
-            }  
+                
+            } 
         }
     };
+   
     
     return (
         <div className={`${styles.charsContainer} ${isRotated ? styles.rotate : ''}`} 

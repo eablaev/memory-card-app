@@ -18,12 +18,12 @@
 }
 
 
-.logo{
-    transition: transform .11s ease-in-out;
-}
-.logo:hover {
-    transform: scale(1.1);
-}
+:root {
+    --primary-color: rgba(42, 42, 42, .8);
+    --secondary-color: rgba(245, 150, 82, .8);
+    --accent-color-one: rgba(242, 243, 199, 1);
+    --accent-color-two:rgba(71, 142, 139, 1);
+  }
 
 
 .container {
@@ -38,16 +38,20 @@
     height: 100%;     
 }
 
-.rightSide {
-    /* border: 3px solid green; */
+.rightSide, 
+.leftSide {
+   display: flex;
+   justify-content: center;
+   align-items: flex-start;
+   
+
 }
 
-.leftSide{
-    /* border: 3px solid yellow; */
-}
 .center {
     /* border: 3px solid blue; */
     display: flex;
-    place-items: center;
+   justify-content: center;
+   align-items: center;
+  
 }
 

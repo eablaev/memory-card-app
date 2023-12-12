@@ -5,36 +5,56 @@ import './App.css'
 
 import Characters from './components/Characters.jsx'
 import ScoreBoard from './components/ScoreBoard.jsx'
+import GameName from './components/GameName.jsx'
+import GameIntro from './components/GameIntro.jsx'
+import GameEnd from './components/GameEnd.jsx'
 
 
 
 
 
 function App() {
+    const [gameState, setGameState] = useState('gameEnd')
     const [currentScore, setCurrentScore] = useState(0);
     const [bestScore, setBestScore] = useState(0);
+    const [lives, setLives ] = useState(1)
 
   return (
     <div className='container'>
         <div className="leftSide">
-           <div className='logo'>
-            <h1>Teraxus</h1>
-            <h2>The Last Battle</h2>
-           </div>
+          {gameState === 'game' && <GameName 
+            setGameState={setGameState}
+            setBestScore={setBestScore}
+            setCurrentScore={setCurrentScore}
+          />}
         </div>
         <div className="center">
-            <Characters
+            {gameState === 'game' && <Characters
                 setBestScore={setBestScore}
                 setCurrentScore={setCurrentScore} 
                 bestScore={bestScore}
                 currentScore={currentScore}
-            /> 
+                setGameState={setGameState}
+                lives={lives}
+                setLives={setLives}
+            /> }
+            {gameState ==='gameIntro' && <GameIntro 
+            setGameState={setGameState}
+            /> }
+            {gameState ==='gameEnd' && <GameEnd 
+            setGameState={setGameState}
+            lives = {lives}
+            setLives={setLives}
+            /> }
+           
         </div>
         <div className="rightSide">
-            <ScoreBoard 
+          { gameState === 'game' && <ScoreBoard 
                 bestScore={bestScore}
                 currentScore={currentScore}
-            />
+                lives={lives}
+                
+            />}
         </div>
         
         
