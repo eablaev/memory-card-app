@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import styles from './Characters.module.css'
@@ -21,15 +21,15 @@ import cardBack from "../assets/images/characters/cardBack.jpeg"
 const charactersArray = [
     { id: uuidv4(), name: 'Crimea', src: Crimea, isClicked: false },
     { id: uuidv4(), name: 'Jix', src: Jix, isClicked: false },
-    { id: uuidv4(), name: 'Lostor', src: Lostor, isClicked: false },
-    { id: uuidv4(), name: 'Malina', src: Malina, isClicked: false },
-    { id: uuidv4(), name: 'Roldo', src: Roldo, isClicked: false },
-    { id: uuidv4(), name: 'Samitra', src: Samitra, isClicked: false },
-    { id: uuidv4(), name: 'Sanokris', src: Sanokris, isClicked: false },
-    { id: uuidv4(), name: 'Shiraq', src: Shiraq, isClicked: false },
-    { id: uuidv4(), name: 'Sila', src: Sila, isClicked: false },
-    { id: uuidv4(), name: 'Skarim', src: Skarim, isClicked: false },
-    { id: uuidv4(), name: 'Xanarx', src: Xanarx, isClicked: false },
+    // { id: uuidv4(), name: 'Lostor', src: Lostor, isClicked: false },
+    // { id: uuidv4(), name: 'Malina', src: Malina, isClicked: false },
+    // { id: uuidv4(), name: 'Roldo', src: Roldo, isClicked: false },
+    // { id: uuidv4(), name: 'Samitra', src: Samitra, isClicked: false },
+    // { id: uuidv4(), name: 'Sanokris', src: Sanokris, isClicked: false },
+    // { id: uuidv4(), name: 'Shiraq', src: Shiraq, isClicked: false },
+    // { id: uuidv4(), name: 'Sila', src: Sila, isClicked: false },
+    // { id: uuidv4(), name: 'Skarim', src: Skarim, isClicked: false },
+    // { id: uuidv4(), name: 'Xanarx', src: Xanarx, isClicked: false },
     { id: uuidv4(), name: 'Zimera', src: Zimera,isClicked: false, isSpecial: true }
 ];
 
@@ -49,10 +49,34 @@ function Character({name, src, isSpecial }) {
     )
 }
 
-export default function Characters({setBestScore, setCurrentScore, bestScore, currentScore, setGameState, lives, setLives}) {
+export default function Characters({setBestScore, setCurrentScore, bestScore, currentScore,gameState, setGameState, lives, setLives}) {
     const [isRotated, setRotated] = useState(false);
     const [charArray, setCharArr] = useState(charactersArray);
+    const [gameOver, setGameOver] = useState(false)
     
+    let updatedArray = [...charArray];
+    let updatedLives = lives;
+    
+
+    //useEffect runs after every render by default, but you can control when it runs by passing an array of dependencies.
+    useEffect(() => {
+        // Check for game over condition after lives update
+        console.log('USE STATE')
+        console.log(gameOver)
+        if(gameOver) {
+            setGameState('gameEnd');
+        }
+        
+    }, [gameOver]);
+
+    useEffect(() => {
+        
+        // This useEffect will run when gameState changes
+        if (gameState === 'game') {
+            console.log("USE STATE FOR RESET BOARD")
+            resetBoard();
+        }
+    }, [gameState]);
 
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -62,61 +86,122 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
         return array;
     }
 
+
+    function updateAndShuffleArray(array) {
+        const resultArray = array.map(char => {
+            if(char.isClicked) {
+                return { ...char, isClicked: false }
+            } else {
+                return char
+            }
+        });
+        return shuffleArray(resultArray);
+    }
+
+    function resetBoard() {
+        console.log('Inside resetBoard')
+        setCurrentScore(0);
+        setBestScore(0);
+        setLives(3)
+        updatedArray = updateAndShuffleArray(updatedArray)
+        console.log('BOARD RESET')
+        setCharArr(updatedArray)
+    }
+
     const onTransitionEnd = (e) => {
-        console.log('animation end')
-        if(e.target.id && isRotated) {
-            const newArray = shuffleArray([...charArray]);
-            setCharArr(newArray);
+       
+        
+        if(e.propertyName === 'transform' && e.target.id ==='isSpecial' && isRotated) {
+            console.log('animation end')
+
+            
+        
+            console.log('updatedArray onTransitionEnd: ')
+            console.log(updatedArray)
+            console.log(updatedArray.every(el => !el.isClicked))
+           
+            setCharArr(shuffleArray(updatedArray));
+            
+                
             setTimeout(() => {
+                
+                
                 setRotated(prevState => !prevState);
             },300)
         }   
     }
 
     const onClick = (e) => {
-        //making sure only applies when cards are rotated
-        if (!isRotated) {
-            const charName = e.target.closest(`.${styles.front}`).querySelector('h3').innerHTML;
-            const charIndex = charArray.findIndex(char => char.name === charName);
-            
-            let updatedArray = charArray;
-            let gameOver = false;
-    
-            // Checking if it was already clicked
-            if (charArray[charIndex].isClicked) {
-                // Checking if the game is over
-                if (lives <= 1) {
-                    console.log('game over');
-                    setGameState('gameEnd');
-                    gameOver = true;
-                   
-                } else {
-                    
-                    setBestScore(bestScore => Math.max(bestScore, currentScore));
-                }
-                //reset current score for the next round or new game
-                setLives(lives => lives - 1);
-                setCurrentScore(0);
+       if(!isRotated){
+       
+        const charName = e.target.closest(`.${styles.front}`).querySelector('h3').innerHTML;
+        const charIndex = charArray.findIndex(char => char.name === charName);
+        
+        
+
+
+       
+
+
+        //card has NOT been clicked on 
+        if(!updatedArray[charIndex].isClicked) {
+            console.log('card has NOT been clicked on')
+            updatedArray[charIndex].isClicked = true;
+            //check if player has won 
+            if(updatedArray.every(char => char.isClicked)) {
+                setGameOver(gameOver => !gameOver)
+                // console.log('you won and gameOver is: '+gameOver)
+                // setGameState('gameEnd');
+               
+                
             } else {
-                // If the card has not been clicked yet
-                setCurrentScore(currentScore => currentScore + 1);
-            }
-    
-            // Update the array and state only if the game is not over
-            if (!gameOver) {
-                updatedArray = charArray.map(char => {
-                    if (char.name === charName) {
-                        return { ...char, isClicked: !charArray[charIndex].isClicked };
-                    }
-                    return char;
-                });
-                
-                setCharArr(updatedArray);
+                setCurrentScore(currentScore => currentScore+1);
+                // setCharArr(updatedArray) 
                 setRotated(prevState => !prevState);
+            }
+  
+        } else {//card has been clicked on 
+            
+            console.log('card has been clicked on');
+            updatedLives --;
+            setLives(updatedLives);
+            setCurrentScore(0)
+            setBestScore(bestScore => Math.max(bestScore, currentScore));
+            
+            
+            //check if lives are at 0
+            if(updatedLives === 0) {
+                console.log('updatedLives === 0')
+                // setGameOver(gameOver => !gameOver);
+                // console.log('You lose and gameOver is: '+gameOver)
+                // setGameState('gameEnd');
+                // resetBoard();
+                setGameOver(gameOver => !gameOver)
                 
-            } 
+            } else {
+               
+                updatedArray = charArray.map(char => {
+                    // If the object has isClicked set to true, set it to false
+                    if (char.isClicked) {
+                      char.isClicked = false;
+                    }
+                    // Otherwise, do nothing (the object remains unchanged)
+                    return char;
+                  });
+
+                console.log(updatedArray)
+               
+                // console.log(updatedArray.every(el => !el.isClicked))
+                ///this will trigger the shuffling and updating array - look inside at animationend
+                setRotated(prevState => !prevState);
+            }
+
         }
+
+        
+       }
     };
+    
    
     
     return (

@@ -12,17 +12,15 @@
 .charCard {
     position: relative;
     transform-style: preserve-3d;
-    transition: transform .3s ease-in;
-    
+    transition: transform .3s ease-in, box-shadow .1s ease-in;
    
     background-clip: padding-box;
     height: max-content; 
 }
 
-.charCard:hover {
-   
-}
-
+/* .charCard:hover {
+    box-shadow: 0 0 20px rgba(225, 14, 14, 0.9);
+} */
 
 
 .back {

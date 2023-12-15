@@ -14,15 +14,15 @@ import GameEnd from './components/GameEnd.jsx'
 
 
 function App() {
-    const [gameState, setGameState] = useState('gameEnd')
+    const [gameState, setGameState] = useState('gameIntro')
     const [currentScore, setCurrentScore] = useState(0);
     const [bestScore, setBestScore] = useState(0);
-    const [lives, setLives ] = useState(1)
+    const [lives, setLives ] = useState(3)
 
   return (
     <div className='container'>
         <div className="leftSide">
-          {gameState === 'game' && <GameName 
+          {(gameState === 'game' || gameState === 'gameIntro') && <GameName 
             setGameState={setGameState}
             setBestScore={setBestScore}
             setCurrentScore={setCurrentScore}
@@ -34,6 +34,7 @@ function App() {
                 setCurrentScore={setCurrentScore} 
                 bestScore={bestScore}
                 currentScore={currentScore}
+                gameState={gameState}
                 setGameState={setGameState}
                 lives={lives}
                 setLives={setLives}
