@@ -1,6 +1,5 @@
 import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+import { motion } from 'framer-motion';
 import './App.css'
 
 import Characters from './components/Characters.jsx'
@@ -17,10 +16,25 @@ function App() {
     const [gameState, setGameState] = useState('gameIntro')
     const [currentScore, setCurrentScore] = useState(0);
     const [bestScore, setBestScore] = useState(0);
-    const [lives, setLives ] = useState(3)
+    const [lives, setLives ] = useState(3);
+
+    const containerVariants = {
+        hidden: { opacity: 0, scale: 0 },
+        visible: { opacity: 1, scale: 1, transition: { duration: .1 } },
+        exit: { opacity: 0, scale: 0, transition: { duration: .1 } },
+    };
 
   return (
-    <div className='container'>
+
+    
+    <motion.div 
+            className='container'
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={containerVariants}
+            exitBeforeEnter
+    >
         <div className="leftSide">
           {(gameState === 'game' || gameState === 'gameIntro') && <GameName 
             setGameState={setGameState}
@@ -29,7 +43,7 @@ function App() {
           />}
         </div>
         <div className="center">
-            {gameState === 'game' && <Characters
+             <Characters
                 setBestScore={setBestScore}
                 setCurrentScore={setCurrentScore} 
                 bestScore={bestScore}
@@ -38,10 +52,11 @@ function App() {
                 setGameState={setGameState}
                 lives={lives}
                 setLives={setLives}
-            /> }
-            {gameState ==='gameIntro' && <GameIntro 
+            /> 
+            <GameIntro 
+            gameState={gameState}
             setGameState={setGameState}
-            /> }
+            /> 
             {gameState ==='gameEnd' && <GameEnd 
             setGameState={setGameState}
             lives = {lives}
@@ -50,17 +65,17 @@ function App() {
            
         </div>
         <div className="rightSide">
-          { gameState === 'game' && <ScoreBoard 
+          <ScoreBoard 
                 bestScore={bestScore}
                 currentScore={currentScore}
                 lives={lives}
-                
-            />}
+                gameState={gameState}
+            />
         </div>
         
         
        
-    </div>
+    </motion.div>
     
   )
 }

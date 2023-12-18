@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
 
 import styles from './Characters.module.css'
@@ -34,6 +35,7 @@ const charactersArray = [
 ];
 
 function Character({name, src, isSpecial }) {
+
     return (
     <>
         <div className={styles.charCard}  id={isSpecial ? 'isSpecial' : null}>
@@ -57,6 +59,11 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
     let updatedArray = [...charArray];
     let updatedLives = lives;
     
+    const containerVariants = {
+        hidden: { opacity: 0, scale: 0 },
+        visible: { opacity: 1, scale: 1, transition: { duration: .3 } },
+        exit: { opacity: 0, scale: 0, transition: { duration: 0.5 } },
+    };
 
     //useEffect runs after every render by default, but you can control when it runs by passing an array of dependencies.
     useEffect(() => {
@@ -86,7 +93,6 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
         return array;
     }
 
-
     function updateAndShuffleArray(array) {
         const resultArray = array.map(char => {
             if(char.isClicked) {
@@ -110,22 +116,16 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
 
     const onTransitionEnd = (e) => {
        
-        
         if(e.propertyName === 'transform' && e.target.id ==='isSpecial' && isRotated) {
             console.log('animation end')
 
-            
-        
             console.log('updatedArray onTransitionEnd: ')
             console.log(updatedArray)
             console.log(updatedArray.every(el => !el.isClicked))
            
             setCharArr(shuffleArray(updatedArray));
-            
-                
+               
             setTimeout(() => {
-                
-                
                 setRotated(prevState => !prevState);
             },300)
         }   
@@ -137,12 +137,6 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
         const charName = e.target.closest(`.${styles.front}`).querySelector('h3').innerHTML;
         const charIndex = charArray.findIndex(char => char.name === charName);
         
-        
-
-
-       
-
-
         //card has NOT been clicked on 
         if(!updatedArray[charIndex].isClicked) {
             console.log('card has NOT been clicked on')
@@ -150,13 +144,10 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
             //check if player has won 
             if(updatedArray.every(char => char.isClicked)) {
                 setGameOver(gameOver => !gameOver)
-                // console.log('you won and gameOver is: '+gameOver)
-                // setGameState('gameEnd');
-               
-                
+                console.log('you won and gameOver is: '+gameOver)
+    
             } else {
                 setCurrentScore(currentScore => currentScore+1);
-                // setCharArr(updatedArray) 
                 setRotated(prevState => !prevState);
             }
   
@@ -167,7 +158,6 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
             setLives(updatedLives);
             setCurrentScore(0)
             setBestScore(bestScore => Math.max(bestScore, currentScore));
-            
             
             //check if lives are at 0
             if(updatedLives === 0) {
@@ -195,26 +185,32 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
                 ///this will trigger the shuffling and updating array - look inside at animationend
                 setRotated(prevState => !prevState);
             }
-
         }
-
-        
        }
     };
     
    
     
-    return (
-        <div className={`${styles.charsContainer} ${isRotated ? styles.rotate : ''}`} 
-                onClick={onClick}
-                onTransitionEnd={onTransitionEnd}
-                >
-            {charArray.map(char => <Character 
-                key={char.id} 
-                name={char.name} 
-                src={char.src} 
-                isSpecial={char.isSpecial}
-                />)}
-        </div>
-    );
+    return(
+    <><AnimatePresence  > 
+       {gameState === 'game' &&(<motion.div 
+            className={`${styles.charsContainer} ${isRotated ? styles.rotate : ''}`} 
+            onClick={onClick}
+            onTransitionEnd={onTransitionEnd}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={containerVariants}
+            // mode='wait'
+            >
+                {charArray.map(char => <Character 
+                    key={char.id} 
+                    name={char.name} 
+                    src={char.src} 
+                    isSpecial={char.isSpecial}
+                    />)}
+        </motion.div>)}
+    </AnimatePresence> 
+    </>
+    )
 }
