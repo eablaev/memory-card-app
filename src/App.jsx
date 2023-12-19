@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion';
 import './App.css'
 
 import Characters from './components/Characters.jsx'
@@ -9,38 +8,22 @@ import GameIntro from './components/GameIntro.jsx'
 import GameEnd from './components/GameEnd.jsx'
 
 
-
-
-
 function App() {
-    const [gameState, setGameState] = useState('gameIntro')
+    const [gameState, setGameState] = useState('gameEnd')
     const [currentScore, setCurrentScore] = useState(0);
     const [bestScore, setBestScore] = useState(0);
     const [lives, setLives ] = useState(3);
 
-    const containerVariants = {
-        hidden: { opacity: 0, scale: 0 },
-        visible: { opacity: 1, scale: 1, transition: { duration: .1 } },
-        exit: { opacity: 0, scale: 0, transition: { duration: .1 } },
-    };
-
   return (
 
-    
-    <motion.div 
-            className='container'
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={containerVariants}
-            exitBeforeEnter
-    >
+    <div className='container'>
         <div className="leftSide">
-          {(gameState === 'game' || gameState === 'gameIntro') && <GameName 
+          <GameName 
             setGameState={setGameState}
             setBestScore={setBestScore}
             setCurrentScore={setCurrentScore}
-          />}
+            gameState={gameState}
+          />
         </div>
         <div className="center">
              <Characters
@@ -57,11 +40,12 @@ function App() {
             gameState={gameState}
             setGameState={setGameState}
             /> 
-            {gameState ==='gameEnd' && <GameEnd 
+            <GameEnd 
             setGameState={setGameState}
             lives = {lives}
             setLives={setLives}
-            /> }
+            gameState={gameState}
+            /> 
            
         </div>
         <div className="rightSide">
@@ -71,12 +55,8 @@ function App() {
                 lives={lives}
                 gameState={gameState}
             />
-        </div>
-        
-        
-       
-    </motion.div>
-    
+        </div>   
+    </div>
   )
 }
 

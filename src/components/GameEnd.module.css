@@ -5,9 +5,12 @@
     justify-content: center;
     border: 2px solid rgb(178, 175, 175);
     gap: 1rem;
-    padding: 8rem;
+    padding: 10vw 4vw;
     border-radius: 10px;
-    background-color: rgba(9, 8, 8, 0.7)
+    background-color: rgba(9, 8, 8, 0.7);
+    position: absolute;
+    
+    margin: 2vh 5vw;
 }
 
 .beginBtn {

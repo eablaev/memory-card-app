@@ -1,9 +1,14 @@
 
-import React, { useState } from 'react';
-
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './GameEnd.module.css'
 
-export default function GameIntro({setGameState, lives, setLives}) {
+export default function GameIntro({setGameState, lives, setLives, gameState}) {
+
+    const containerVariants = {
+        hidden: {opacity:0, x: -1100 }, // start from above the screen
+        visible: {opacity:1, x: 0, transition: { duration: 1,  ease: "easeInOut"  } }, // move to the center of the screen
+        exit: { opacity: 0, x: -1100, transition: { duration: .5 } }, // move to below the screen
+      };
     console.log('inside endGame lives:'+lives)
     console.log(lives > 0)
   
@@ -12,13 +17,21 @@ export default function GameIntro({setGameState, lives, setLives}) {
     const message = lives > 1 ? winningMessage : losingMessage;
     function startGame() {
         setGameState('game');
-        // setLives(3)
-
+   
     }
     return(
-        <div className={styles.gameEndContainer}>
+    <AnimatePresence>  
+        {gameState === 'gameEnd' && 
+        (<motion.div 
+        className={styles.gameEndContainer}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={containerVariants}
+        >
             <h4>{message}</h4>
             <div onClick={startGame} className={styles.beginBtn}>PLAY AGAIN</div>
-        </div>
+        </motion.div>)}
+    </AnimatePresence>
     )
 }

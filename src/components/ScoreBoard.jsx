@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './ScoreBoard.module.css'
-
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as faHeartReg } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSol } from '@fortawesome/free-solid-svg-icons';
-
-
-
-
-
 
 export default function ScoreBoard ({currentScore, bestScore, lives, gameState}) {
     const totalLives = 3; 
@@ -25,7 +18,7 @@ export default function ScoreBoard ({currentScore, bestScore, lives, gameState})
     };
 
     return (
-        <><AnimatePresence  > 
+    <AnimatePresence> 
        {gameState === 'game'&& (<motion.div 
         className={styles.scoreBoard}
         initial="hidden"
@@ -47,7 +40,6 @@ export default function ScoreBoard ({currentScore, bestScore, lives, gameState})
                })}
             </div> 
        </motion.div>)}
-       </AnimatePresence> 
-       </>
+    </AnimatePresence> 
     )
 }
