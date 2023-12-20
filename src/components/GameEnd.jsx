@@ -2,7 +2,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './GameEnd.module.css'
 
-export default function GameIntro({setGameState, lives, setLives, gameState}) {
+export default function GameEnd({setGameState, lives, setLives, gameState}) {
 
     const containerVariants = {
         hidden: {opacity:0, x: -1100 }, // start from above the screen

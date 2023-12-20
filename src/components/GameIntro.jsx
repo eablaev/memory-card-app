@@ -8,6 +8,8 @@ export default function GameIntro({gameState,setGameState}) {
         visible: {opacity:1, x: 0, transition: { duration: 1,  ease: "easeInOut"  } }, // move to the center of the screen
         exit: { opacity: 0, x: -1100, transition: { duration: .5 } }, // move to below the screen
       };
+
+   
       
     function startGame() {
         console.log('start')

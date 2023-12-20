@@ -1,7 +1,4 @@
 
-
-
-
 #root {
     font-family: 'Orbitron', sans-serif;
 
@@ -44,14 +41,29 @@
    justify-content: center;
    align-items: flex-start;
    
+}
 
+.soundBtn > svg {
+    border: 1px solid var(--accent-color-one);
+    border-radius: 100%;
+    position: absolute;
+    padding: 1vh;
+    left:1vw;
+    bottom:1vw;
+    width: 2vw;
+    height: 2vw;
+    color: var(--accent-color-one);
+    transition: scale .1s ease-in-out;
+}
+
+.soundBtn > svg:hover {
+    scale: 1.2;
+    background-color:  var(--secondary-color);
 }
 
 .center {
-    /* border: 3px solid blue; */
     display: flex;
    justify-content: center;
-   align-items: center;
-  
+   align-items: center; 
 }
 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,23 +18,24 @@ import Xanarx from "../assets/images/characters/Xanarx.jpeg";
 import Zimera from "../assets/images/characters/Zimera.jpeg";
 import cardBack from "../assets/images/characters/cardBack.jpeg"
 
+import cardSFX from '../assets/audio/slide.wav'
+
 const charactersArray = [
     { id: uuidv4(), name: 'Crimea', src: Crimea, isClicked: false },
     { id: uuidv4(), name: 'Jix', src: Jix, isClicked: false },
-    // { id: uuidv4(), name: 'Lostor', src: Lostor, isClicked: false },
-    // { id: uuidv4(), name: 'Malina', src: Malina, isClicked: false },
-    // { id: uuidv4(), name: 'Roldo', src: Roldo, isClicked: false },
-    // { id: uuidv4(), name: 'Samitra', src: Samitra, isClicked: false },
-    // { id: uuidv4(), name: 'Sanokris', src: Sanokris, isClicked: false },
-    // { id: uuidv4(), name: 'Shiraq', src: Shiraq, isClicked: false },
-    // { id: uuidv4(), name: 'Sila', src: Sila, isClicked: false },
-    // { id: uuidv4(), name: 'Skarim', src: Skarim, isClicked: false },
-    // { id: uuidv4(), name: 'Xanarx', src: Xanarx, isClicked: false },
+    { id: uuidv4(), name: 'Lostor', src: Lostor, isClicked: false },
+    { id: uuidv4(), name: 'Malina', src: Malina, isClicked: false },
+    { id: uuidv4(), name: 'Roldo', src: Roldo, isClicked: false },
+    { id: uuidv4(), name: 'Samitra', src: Samitra, isClicked: false },
+    { id: uuidv4(), name: 'Sanokris', src: Sanokris, isClicked: false },
+    { id: uuidv4(), name: 'Shiraq', src: Shiraq, isClicked: false },
+    { id: uuidv4(), name: 'Sila', src: Sila, isClicked: false },
+    { id: uuidv4(), name: 'Skarim', src: Skarim, isClicked: false },
+    { id: uuidv4(), name: 'Xanarx', src: Xanarx, isClicked: false },
     { id: uuidv4(), name: 'Zimera', src: Zimera,isClicked: false, isSpecial: true }
 ];
 
 function Character({name, src, isSpecial }) {
-
     return (
     <>
         <div className={styles.charCard}  id={isSpecial ? 'isSpecial' : null}>
@@ -51,7 +51,22 @@ function Character({name, src, isSpecial }) {
     )
 }
 
-export default function Characters({setBestScore, setCurrentScore, bestScore, currentScore,gameState, setGameState, lives, setLives}) {
+export default function Characters(
+        {setBestScore, 
+        setCurrentScore,
+        currentScore,
+        gameState, 
+        setGameState, 
+        lives, 
+        setLives,
+        soundOn
+    }) {
+    
+    const playSound = () => {
+        let audio = new Audio(cardSFX);
+        audio.play();
+    }; 
+   
     const [isRotated, setRotated] = useState(false);
     const [charArray, setCharArr] = useState(charactersArray);
     const [gameOver, setGameOver] = useState(false)
@@ -134,6 +149,9 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
 
     const onClick = (e) => {
        if(!isRotated){
+        if(soundOn) {
+            playSound()
+        }
        
         const charName = e.target.closest(`.${styles.front}`).querySelector('h3').innerHTML;
         const charIndex = charArray.findIndex(char => char.name === charName);
@@ -189,8 +207,6 @@ export default function Characters({setBestScore, setCurrentScore, bestScore, cu
         }
        }
     };
-    
-   
     
     return(
     <><AnimatePresence  > 

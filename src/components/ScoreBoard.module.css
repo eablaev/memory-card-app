@@ -1,19 +1,12 @@
-
-
 .scoreBoard {
     display: flex;
     flex-direction:column;
-    place-content: center;
-   
-    
+    place-content: center;  
 }
-
-
 
 .currentScore, .bestScore {
     display: flex;
     gap:.4rem
-  
 }
 
 .livesDisplay {
@@ -23,8 +16,8 @@
     gap: .3rem;
     margin-top: 1rem;
 }
+
 .livesDisplay > svg {
     color:red;
-    font-size: 1.7rem;
-    
+    font-size: 1.7rem;  
 }

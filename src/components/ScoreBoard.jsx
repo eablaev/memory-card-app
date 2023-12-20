@@ -6,6 +6,7 @@ import { faHeart as faHeartReg } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSol } from '@fortawesome/free-solid-svg-icons';
 
 export default function ScoreBoard ({currentScore, bestScore, lives, gameState}) {
+   console.log('inside Board Score')
     const totalLives = 3; 
     const iconsArray = Array.from({length: totalLives}, (_, index)=> {
         return  index < lives ? faHeartSol : faHeartReg
